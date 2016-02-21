@@ -8,17 +8,16 @@ def calc_daily_balances_for_month(year, month, start_balance, end_balance):
     start_balance = start_balance * 100
     end_balance = end_balance * 100
 
-    days_range = get_day_range_for_month(year, month)
-    num_days = len(days_range)
+    num_days = get_number_of_days_in_month(year, month)
     monthly_spend = start_balance - end_balance
     daily_spend = calc_daily_spending_amount(monthly_spend, num_days)
 
-    # breakout into a function
-    balances = []
-    daily_balance = start_balance
-    for day in range(num_days):
-        balances.append(daily_balance)
-        daily_balance -= daily_spend
+    balances = [get_balance(day, daily_spend, start_balance) for day in range(num_days)]
+    # balances = []
+    # daily_balance = start_balance
+    # for day in range(num_days):
+    #     balances.append(daily_balance)
+    #     daily_balance -= daily_spend
 
     # breakout into a function, or list comp
     Balance = namedtuple('Balance', 'date balance')
@@ -32,11 +31,22 @@ def calc_daily_balances_for_month(year, month, start_balance, end_balance):
     return daily_balances
 
 
+def get_balance(day, daily_spend, start_balance):
+    if day > 0:
+        return start_balance - (daily_spend * day)
+    return start_balance
+
+
 def calc_daily_spending_amount(monthly_spend_pence, num_days):
     # TODO: research best way to deal with representing currencies in Python
     return monthly_spend_pence / num_days
 
 
+def get_number_of_days_in_month(year, month):
+    return monthrange(year, month)[1]
+
+
+# TODO: remove this function
 def get_day_range_for_month(year, month):
     """
     Get range for days in a given month
