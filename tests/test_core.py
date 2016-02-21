@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from moola.shell import (
+from moola.core import (
     calc_daily_balances_for_month,
     calc_daily_spending_amount)
 
