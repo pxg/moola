@@ -27,7 +27,7 @@ def test_get_amounts_for_month_first_item_correct_date():
         month=2,
         start_balance=2500,
         end_balance=500)
-    assert amounts[0][0] == datetime(2016, 2, 1)
+    assert amounts[0].date == datetime(2016, 2, 1)
 
 
 def test_get_amounts_for_month_last_item_correct_date():
@@ -36,7 +36,7 @@ def test_get_amounts_for_month_last_item_correct_date():
         month=2,
         start_balance=2500,
         end_balance=500)
-    assert amounts[-1][0] == datetime(2016, 2, 29)
+    assert amounts[-1].date == datetime(2016, 2, 29)
 
 
 def test_get_amounts_for_month_first_item_correct_balance():
@@ -45,4 +45,4 @@ def test_get_amounts_for_month_first_item_correct_balance():
         month=2,
         start_balance=2500,
         end_balance=500)
-    assert amounts[0][1] == 2500
+    assert amounts[0].balance == 2500

@@ -14,7 +14,7 @@ def create_sheet_for_month():
 # TOOD: rename get daily_balances for month
 def get_amounts_for_month(year, month, start_balance, end_balance):
     daily_balances = []
-    Balance = namedtuple('Balance', 'date amount')
+    Balance = namedtuple('Balance', 'date balance')
     # TODO: break into function
     num_days = monthrange(year, month)[1]
 
