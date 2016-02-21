@@ -20,9 +20,7 @@ def calc_daily_balances_for_month(year, month, start_balance, end_balance):
 
 
 def calc_balance(index, daily_spend, start_balance):
-    if index > 0:
-        return start_balance - (daily_spend * index)
-    return start_balance
+    return start_balance - (daily_spend * index)
 
 
 def format_balance(year, month, index, balance):
