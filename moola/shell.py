@@ -14,11 +14,17 @@ def create_sheet_for_month():
 def calc_daily_balances_for_month(year, month, start_balance, end_balance):
     daily_balances = []
     Balance = namedtuple('Balance', 'date balance')
-    # TODO: break into function
-    num_days = monthrange(year, month)[1]
 
-    for day in range(1, num_days + 1):
+    for day in get_day_range_for_month(year, month):
         date = datetime(year, month, day)
         date_balance = Balance(date, 2500)
         daily_balances.append(date_balance)
     return daily_balances
+
+
+def get_day_range_for_month(year, month):
+    """
+    Get range for days in a given month
+    """
+    num_days = monthrange(year, month)[1]
+    return range(1, num_days + 1)
