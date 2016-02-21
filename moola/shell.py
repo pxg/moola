@@ -11,8 +11,7 @@ def create_sheet_for_month():
     pass
 
 
-# TOOD: rename get daily_balances for month
-def get_amounts_for_month(year, month, start_balance, end_balance):
+def calc_daily_balances_for_month(year, month, start_balance, end_balance):
     daily_balances = []
     Balance = namedtuple('Balance', 'date balance')
     # TODO: break into function
