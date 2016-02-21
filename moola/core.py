@@ -24,6 +24,9 @@ def calc_balance(index, daily_spend, start_balance):
 
 
 def format_balance(year, month, index, balance):
+    """
+    Return balance as a tuple containg the date and the amount in pounds
+    """
     Balance = namedtuple('Balance', 'date balance')
     return Balance(datetime(year, month, index + 1), int(balance) / 100)
 
@@ -35,12 +38,3 @@ def calc_daily_spending_amount(monthly_spend_pence, num_days):
 
 def get_number_of_days_in_month(year, month):
     return monthrange(year, month)[1]
-
-
-# TODO: remove this function
-def get_day_range_for_month(year, month):
-    """
-    Get range for days in a given month
-    """
-    num_days = monthrange(year, month)[1]
-    return range(1, num_days + 1)
