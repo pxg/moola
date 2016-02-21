@@ -4,3 +4,11 @@ def create_sheet_for_month():
     for month
     """
     pass
+
+
+def get_monthly_transactions():
+    """
+    Get monthly transactions from persistent storage
+    """
+    # Initial version read YAML from file
+    pass

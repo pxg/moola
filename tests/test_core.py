@@ -70,3 +70,19 @@ def test_calc_daily_balances_for_month_last_item_correct_balance():
 
 def test_calc_daily_spending_amount():
     assert calc_daily_spending_amount(200000, 29) == 6896.551724137931
+
+
+# def test_calc_daily_balances_correct_balance_with_transaction():
+#     from collections import namedtuple
+#     # TODO: pull named Tuple from actual code
+#     Transaction = namedtuple('Transaction', 'day amount description')
+#     transactions = Transaction(2, 9.99, 'Nexflix')
+
+#     amounts = calc_daily_balances_for_month(
+#         year=2016,
+#         month=2,
+#         start_balance=2500,
+#         end_balance=500,
+#         transactions=transactions)
+#     daily_amount = 50
+#     assert amounts[1].balance == 2500 - daily_amount - 9.99
