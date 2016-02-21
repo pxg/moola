@@ -12,23 +12,22 @@ def calc_daily_balances_for_month(year, month, start_balance, end_balance):
     monthly_spend = start_balance - end_balance
     daily_spend = calc_daily_spending_amount(monthly_spend, num_days)
 
-    balances = [
-        calc_balance(day, daily_spend, start_balance) for day in range(num_days)]
-    daily_balances = [
-        format_balance(year, month, day, balance) for day, balance in enumerate(balances)]
+    daily_balances = []
+    for day in range(num_days):
+        balance = calc_balance(day, daily_spend, start_balance)
+        daily_balances.append(format_balance(year, month, day, balance))
     return daily_balances
 
 
-def calc_balance(day, daily_spend, start_balance):
-    if day > 0:
-        return start_balance - (daily_spend * day)
+def calc_balance(index, daily_spend, start_balance):
+    if index > 0:
+        return start_balance - (daily_spend * index)
     return start_balance
 
 
-def format_balance(year, month, day, balance):
+def format_balance(year, month, index, balance):
     Balance = namedtuple('Balance', 'date balance')
-    date = datetime(year, month, day + 1)
-    return Balance(date, int(balance) / 100)
+    return Balance(datetime(year, month, index + 1), int(balance) / 100)
 
 
 def calc_daily_spending_amount(monthly_spend_pence, num_days):
