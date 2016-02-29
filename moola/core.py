@@ -1,4 +1,4 @@
-from calendar import monthrange, Calendar
+from calendar import Calendar
 from collections import namedtuple
 from datetime import datetime
 
@@ -48,19 +48,20 @@ def calc_daily_balances_for_month(
 def _calc_daily_balances_for_month(
         year, month, start_balance, end_balance, transactions=[]):
     dates = get_days_in_month(year, month)
+
+    # TODO: calc monthly spend in function which takes transactions
     transactions_total = calc_transactions_total(transactions)
     monthly_spend = start_balance - end_balance + transactions_total
+
     daily_spend = monthly_spend / len(dates)
 
     balances = []
-    # TODO: get list of days for for loop new function
     # TODO: add datetime and balance in this function.
-    # Remove loop in outer function
+    # TODO: move loop in outer function
     for day in dates:
-        day = day.day
-        transaction_amount = calc_transactions_up_to_day(day, transactions)
+        transaction_amount = calc_transactions_up_to_day(day.day, transactions)
         balance = calc_balance(
-            day,
+            day.day,
             daily_spend,
             start_balance,
             transaction_amount)
@@ -85,20 +86,15 @@ def calc_balance(day, daily_spend, start_balance, transaction_amount):
     return start_balance - (daily_spend * (day - 1)) + transaction_amount
 
 
-# TODO: to remove
+# TODO: remove when logic is reworked
 # TODO: needs unit tests
 def format_balance(year, month, index, balance):
     """
-    Return balance as a tuple containg the date and the amount in pounds and
+    Return balance as a tuple containing the date and the amount in pounds and
     pence.
     """
     Balance = namedtuple('Balance', 'date balance')
     return Balance(datetime(year, month, index + 1), round(balance.amount, 2))
-
-
-# TODO: needs unit test
-def get_number_of_days_in_month(year, month):
-    return monthrange(year, month)[1]
 
 
 def get_days_in_month(year, month):
