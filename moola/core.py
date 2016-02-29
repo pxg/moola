@@ -7,7 +7,9 @@ from money import Money as BaseMoney
 
 class Money(BaseMoney):
 
-    # TODO: add custom constructor so we always use GBP
+    def __init__(self, *args, **kwargs):
+        new_args = (args[0], 'GBP')
+        super().__init__(*new_args, **kwargs)
 
     @property
     def rounded_amount(self):
@@ -22,7 +24,7 @@ class Transaction:
 
     def __init__(self, day, amount, description):
         self.day = day
-        self.amount = Money(amount, 'GBP')
+        self.amount = Money(amount)
         self.description = description
 
 
@@ -35,8 +37,8 @@ def calc_daily_balances_for_month(
     balances = _calc_daily_balances_for_month(
         year,
         month,
-        Money(start_balance, 'GBP'),
-        Money(end_balance, 'GBP'),
+        Money(start_balance),
+        Money(end_balance),
         transactions)
 
     formatted_balances = []
