@@ -99,7 +99,7 @@ def test_calc_daily_balances_correct_balance_with_two_transactions():
 
 
 def test_calc_transactions_total_no_transactions():
-    assert calc_transactions_total([]) == Money(0, 'GBP')
+    assert calc_transactions_total([]) == 0
 
 
 def test_calc_transactions_total_one_transaction():

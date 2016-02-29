@@ -27,7 +27,7 @@ class Transaction:
 
 
 def calc_daily_balances_for_month(
-        year, month, start_balance, end_balance, transactions=None):
+        year, month, start_balance, end_balance, transactions=[]):
     """
     Wrapper function which converts amounts to pence, calls the actual logic
     then formats the return
@@ -46,7 +46,7 @@ def calc_daily_balances_for_month(
 
 
 def _calc_daily_balances_for_month(
-        year, month, start_balance, end_balance, transactions=None):
+        year, month, start_balance, end_balance, transactions=[]):
     num_days = get_number_of_days_in_month(year, month)
     transactions_total = calc_transactions_total(transactions)
     monthly_spend = start_balance - end_balance + transactions_total
@@ -65,6 +65,7 @@ def _calc_daily_balances_for_month(
     return balances
 
 
+# TODO: functional style
 def calc_transactions_up_to_day(day, transactions):
     """
     Calculate transactions up to the current day of the month
@@ -79,15 +80,8 @@ def calc_transactions_up_to_day(day, transactions):
     return total
 
 
-# TODO: rename calc. Check unit tests
 def calc_transactions_total(transactions):
-    total = Money(0, 'GBP')
-    # TODO: check needed? can we use sum?
-    if transactions is None:
-        return total
-    for transaction in transactions:
-        total += transaction.amount
-    return total
+    return sum([transaction.amount for transaction in transactions])
 
 
 # TODO: needs unit tests
