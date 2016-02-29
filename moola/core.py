@@ -1,4 +1,4 @@
-from calendar import monthrange
+from calendar import monthrange, Calendar
 from collections import namedtuple
 from datetime import datetime
 
@@ -8,13 +8,15 @@ from money import Money as BaseMoney
 class Money(BaseMoney):
 
     def __init__(self, *args, **kwargs):
-        new_args = (args[0], 'GBP')
-        super().__init__(*new_args, **kwargs)
+        """
+        Class the super class constructor with the currency set to pounds
+        """
+        super().__init__(*(args[0], 'GBP'), **kwargs)
 
     @property
     def rounded_amount(self):
         """
-        Helper method to make tests easier to read.
+        Helper method to make tests easier to read
         """
         amount = round(self.amount, 2)
         return int(amount * 100) / 100
@@ -30,10 +32,6 @@ class Transaction:
 
 def calc_daily_balances_for_month(
         year, month, start_balance, end_balance, transactions=[]):
-    """
-    Wrapper function which converts amounts to pence, calls the actual logic
-    then formats the return
-    """
     balances = _calc_daily_balances_for_month(
         year,
         month,
@@ -55,6 +53,9 @@ def _calc_daily_balances_for_month(
     daily_spend = monthly_spend / num_days
 
     balances = []
+    # TODO: get list of days for for loop new function
+    # TODO: add datetime and balance in this function.
+    # Remove loop in outer function
     for index in range(num_days):
         day = index + 1
         transaction_amount = calc_transactions_up_to_day(day, transactions)
@@ -84,6 +85,7 @@ def calc_balance(index, daily_spend, start_balance, transaction_amount):
     return start_balance - (daily_spend * index) + transaction_amount
 
 
+# TODO: to remove
 # TODO: needs unit tests
 def format_balance(year, month, index, balance):
     """
@@ -97,3 +99,9 @@ def format_balance(year, month, index, balance):
 # TODO: needs unit test
 def get_number_of_days_in_month(year, month):
     return monthrange(year, month)[1]
+
+
+def get_days_in_month(year, month):
+    calendar = Calendar()
+    dates = calendar.itermonthdates(year, month)
+    return [date for date in dates if date.month == month]
