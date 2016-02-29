@@ -1,9 +1,8 @@
-import pytest
-
 from collections import namedtuple
 from datetime import datetime
 
 from moola.core import (
+    Transaction,
     calc_daily_balances_for_month,
     calc_daily_spending_amount,
     calc_transactions_up_to_day,
@@ -114,13 +113,11 @@ def test_get_transactions_total_no_transactions():
 
 
 def test_get_transactions_total_one_transaction():
-    Transaction = namedtuple('Transaction', 'day amount description')
     transactions = [Transaction(2, -9.99, 'Nexflix')]
     assert get_transactions_total(transactions) == -9.99
 
 
 def test_get_transactions_total_two_transactions():
-    Transaction = namedtuple('Transaction', 'day amount description')
     transactions = [
         Transaction(2, -9.99, 'Nexflix'),
         Transaction(2, -5.00, 'Spotify')]
@@ -132,13 +129,11 @@ def test_calc_transactions_up_to_day_no_transactions():
 
 
 def test_calc_transactions_up_to_day_one_transaction():
-    Transaction = namedtuple('Transaction', 'day amount description')
     transactions = [Transaction(2, -9.99, 'Nexflix')]
     assert calc_transactions_up_to_day(2, transactions) == -9.99
 
 
 def test_calc_transactions_up_to_day_two_transactions_different_days():
-    Transaction = namedtuple('Transaction', 'day amount description')
     transactions = [
         Transaction(1, -9.99, 'Nexflix'),
         Transaction(2, -5.00, 'Spotify')]
@@ -146,7 +141,6 @@ def test_calc_transactions_up_to_day_two_transactions_different_days():
 
 
 def test_calc_transactions_up_to_day_transaction_after_day():
-    Transaction = namedtuple('Transaction', 'day amount description')
     transactions = [
         Transaction(2, -9.99, 'Nexflix'),
         Transaction(3, -5.00, 'Spotify')]

@@ -3,6 +3,14 @@ from datetime import datetime
 from collections import namedtuple
 
 
+class Transaction:
+
+    def __init__(self, day, amount, description):
+        self.day = day
+        self.amount = amount
+        self.description = description
+
+
 def calc_daily_balances_for_month(
         year, month, start_balance, end_balance, transactions=None):
     """
@@ -44,7 +52,6 @@ def _calc_daily_balances_for_month(
 
 # TODO: needs unit tests
 def convert_transactions_pence(transactions):
-    Transaction = namedtuple('Transaction', 'day amount description')
     if transactions is None:
         return []
     return [
