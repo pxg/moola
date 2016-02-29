@@ -65,19 +65,12 @@ def _calc_daily_balances_for_month(
     return balances
 
 
-# TODO: functional style
 def calc_transactions_up_to_day(day, transactions):
     """
     Calculate transactions up to the current day of the month
     """
-    total = 0
-    if transactions is None:
-        return total
-
-    for transaction in transactions:
-        if transaction.day <= day:
-            total += transaction.amount
-    return total
+    transaction_period = [t.amount for t in transactions if t.day <= day]
+    return calc_transactions_total(transaction_period)
 
 
 def calc_transactions_total(transactions):
