@@ -48,7 +48,7 @@ def calc_daily_balances_for_month(
 def _calc_daily_balances_for_month(
         year, month, start_balance, end_balance, transactions=None):
     num_days = get_number_of_days_in_month(year, month)
-    transactions_total = get_transactions_total(transactions)
+    transactions_total = calc_transactions_total(transactions)
     monthly_spend = start_balance - end_balance + transactions_total
     daily_spend = monthly_spend / num_days
 
@@ -80,7 +80,7 @@ def calc_transactions_up_to_day(day, transactions):
 
 
 # TODO: rename calc. Check unit tests
-def get_transactions_total(transactions):
+def calc_transactions_total(transactions):
     total = Money(0, 'GBP')
     # TODO: check needed? can we use sum?
     if transactions is None:

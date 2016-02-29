@@ -5,8 +5,8 @@ from moola.core import (
     Money,
     Transaction,
     calc_daily_balances_for_month,
-    calc_transactions_up_to_day,
-    get_transactions_total)
+    calc_transactions_total,
+    calc_transactions_up_to_day)
 
 
 def test_calc_daily_balances_for_month_amount_for_each_day():
@@ -98,21 +98,21 @@ def test_calc_daily_balances_correct_balance_with_two_transactions():
     assert amounts[1].balance == Decimal('2800')
 
 
-def test_get_transactions_total_no_transactions():
-    assert get_transactions_total([]) == Money(0, 'GBP')
+def test_calc_transactions_total_no_transactions():
+    assert calc_transactions_total([]) == Money(0, 'GBP')
 
 
-def test_get_transactions_total_one_transaction():
+def test_calc_transactions_total_one_transaction():
     transactions = [Transaction(2, -9.99, 'Nexflix')]
-    total = get_transactions_total(transactions)
+    total = calc_transactions_total(transactions)
     assert total.rounded_amount == -9.99
 
 
-def test_get_transactions_total_two_transactions():
+def test_calc_transactions_total_two_transactions():
     transactions = [
         Transaction(2, -9.99, 'Nexflix'),
         Transaction(2, -5.00, 'Spotify')]
-    total = get_transactions_total(transactions)
+    total = calc_transactions_total(transactions)
     assert total.rounded_amount == -14.99
 
 
