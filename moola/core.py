@@ -47,20 +47,20 @@ def calc_daily_balances_for_month(
 
 def _calc_daily_balances_for_month(
         year, month, start_balance, end_balance, transactions=[]):
-    num_days = get_number_of_days_in_month(year, month)
+    dates = get_days_in_month(year, month)
     transactions_total = calc_transactions_total(transactions)
     monthly_spend = start_balance - end_balance + transactions_total
-    daily_spend = monthly_spend / num_days
+    daily_spend = monthly_spend / len(dates)
 
     balances = []
     # TODO: get list of days for for loop new function
     # TODO: add datetime and balance in this function.
     # Remove loop in outer function
-    for index in range(num_days):
-        day = index + 1
+    for day in dates:
+        day = day.day
         transaction_amount = calc_transactions_up_to_day(day, transactions)
         balance = calc_balance(
-            index,
+            day,
             daily_spend,
             start_balance,
             transaction_amount)
@@ -81,8 +81,8 @@ def calc_transactions_total(transactions):
 
 
 # TODO: needs unit tests
-def calc_balance(index, daily_spend, start_balance, transaction_amount):
-    return start_balance - (daily_spend * index) + transaction_amount
+def calc_balance(day, daily_spend, start_balance, transaction_amount):
+    return start_balance - (daily_spend * (day - 1)) + transaction_amount
 
 
 # TODO: to remove
