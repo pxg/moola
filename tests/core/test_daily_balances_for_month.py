@@ -28,34 +28,37 @@ def test_daily_balances_for_month_last_item_correct_date():
 
 
 def test_daily_balances_for_month_first_item_correct_balance():
-    amounts = daily_balances_for_month(year=2016, month=2, start=2500, end=500)
+    balances = daily_balances_for_month(
+        year=2016, month=2, start=2500, end=500)
 
-    assert amounts[0].balance == 2500
+    assert balances[0].amount == 2500
 
 
 def test_daily_balances_for_month_second_item_correct_balance():
-    amounts = daily_balances_for_month(year=2016, month=2, start=2500, end=500)
+    balances = daily_balances_for_month(
+        year=2016, month=2, start=2500, end=500)
 
-    assert amounts[1].balance == 2431.03
+    assert balances[1].amount == 2431.03
 
 
 def test_daily_balances_for_month_last_item_correct_balance():
-    amounts = daily_balances_for_month(year=2016, month=2, start=2500, end=500)
+    balances = daily_balances_for_month(
+        year=2016, month=2, start=2500, end=500)
 
-    assert amounts[-1].balance == 568.97
+    assert balances[-1].amount == 568.97
 
 
 def test_daily_balances_correct_balance_with_one_transaction():
     transactions = [Transaction(2, -9.99, 'Nexflix')]
 
-    amounts = daily_balances_for_month(
+    balances = daily_balances_for_month(
         year=2016,
         month=2,
         start=2909.99,  # 100 spend a day
         end=0,
         transactions=transactions)
 
-    assert amounts[1].balance == 2800
+    assert balances[1].amount == 2800
 
 
 def test_daily_balances_correct_balance_with_two_transactions():
@@ -63,11 +66,11 @@ def test_daily_balances_correct_balance_with_two_transactions():
         Transaction(1, -5.00, 'Spotify'),
         Transaction(1, -9.99, 'Nexflix')]
 
-    amounts = daily_balances_for_month(
+    balances = daily_balances_for_month(
         year=2016,
         month=2,
         start=2914.99,  # 100 spend a day
         end=0,
         transactions=transactions)
 
-    assert amounts[1].balance == 2800
+    assert balances[1].amount == 2800
