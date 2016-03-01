@@ -43,7 +43,7 @@ def _get_monthly_transactions(spreadsheet):
     transactions = []
     # TODO: add named splice for skipping headers
     for row in transaction_data[1:]:
-        transactions.append(Transaction(row[0], row[1], row[2]))
+        transactions.append(Transaction(*row))
     return transactions
 
 
