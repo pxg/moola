@@ -36,15 +36,11 @@ def _get_monthly_transactions(spreadsheet):
     """
     Get monthly transactions from persistent storage
     """
-    worksheet = spreadsheet.worksheet('transactions')
     print('Reading transactions data')
+    worksheet = spreadsheet.worksheet('transactions')
     transaction_data = worksheet.get_all_values()
-
-    transactions = []
     # TODO: add named splice for skipping headers
-    for row in transaction_data[1:]:
-        transactions.append(Transaction(*row))
-    return transactions
+    return [Transaction(*row) for row in transaction_data[1:]]
 
 
 def _get_google_spreadsheet():
