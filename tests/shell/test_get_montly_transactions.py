@@ -1,12 +1,25 @@
-from moola.shell import _get_monthly_transactions
-from moola.core import Transaction, Money
+from mock import Mock
+
+from moola.shell import experiment, experiment2
+# from moola.core import Transaction, Money
 
 
-# Commented out until I figure out how to mock the connection to the Google
-# Spreadsheet API
-# def test_get_monthly_transactions_returns_list():
-#     assert isinstance(_get_monthly_transactions(), list) == True
+def test_experiemnt():
+    spreadsheet = Mock()
+    spreadsheet.worksheet = Mock(return_value=[3, ])
 
+    assert isinstance(experiment(spreadsheet), list) == True
+    assert experiment(spreadsheet) == [3, ]
+
+
+def test_experiment2():
+    worksheet = Mock()
+    worksheet.get_all_values = Mock(return_value=[3, ])
+    spreadsheet = Mock()
+    spreadsheet.worksheet = Mock(return_value=worksheet)
+
+    assert isinstance(experiment2(spreadsheet), list) == True
+    assert experiment2(spreadsheet) == [3, ]
 
 # def test_get_monthly_transactions_returns_two_items():
 #     assert len(_get_monthly_transactions()) == 2
