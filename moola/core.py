@@ -69,6 +69,11 @@ def _calc_daily_balances_for_month(
     return balances
 
 
+def _calc_monthly_spend(start_balance, end_balance, transactions=[]):
+    transactions_total = calc_transactions_total(transactions)
+    return start_balance - end_balance + transactions_total
+
+
 def calc_transactions_up_to_day(day, transactions):
     """
     Calculate transactions up to the current day of the month
