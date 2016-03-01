@@ -34,13 +34,13 @@ def _prompt_user_for_inputs():
 
 def _get_monthly_transactions(spreadsheet):
     """
-    Get monthly transactions from persistent storage
+    Get monthly transactions from Google spreadsheet.
     """
     print('Reading transactions data')
     worksheet = spreadsheet.worksheet('transactions')
     transaction_data = worksheet.get_all_values()
-    # TODO: add named splice for skipping headers
-    return [Transaction(*row) for row in transaction_data[1:]]
+    no_headers = slice(1, len(transaction_data))
+    return [Transaction(*row) for row in transaction_data[no_headers]]
 
 
 def _get_google_spreadsheet():
