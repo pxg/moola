@@ -6,6 +6,7 @@ from oauth2client.client import SignedJwtAssertionCredentials
 from moola.core import daily_balances_for_month, Transaction
 
 
+# TODO: tests
 def create_sheet_for_month():
     """
     Prompt user for required values then create Google spreadsheet with amounts
@@ -26,6 +27,7 @@ def create_sheet_for_month():
     _write_balances_to_spreadsheet(spreadsheet, balances)
 
 
+# TODO: tests
 def _prompt_user_for_inputs():
     # TODO: prompt user for month, year, start and end balance
     # TODO: can this be tested easily
@@ -34,7 +36,7 @@ def _prompt_user_for_inputs():
 
 def _get_monthly_transactions(spreadsheet):
     """
-    Get monthly transactions from Google spreadsheet.
+    Get monthly transactions from Google spreadsheet
     """
     print('Reading transactions data')
     worksheet = spreadsheet.worksheet('transactions')
@@ -56,6 +58,7 @@ def _get_google_spreadsheet():
     return gc.open('Money dev')
 
 
+# TODO: tests. Consider splitting or returning cell values first
 def _write_balances_to_spreadsheet(spreadsheet, balances):
     # TODO1: use month name to look-up the spreadsheet
     # TODO2: create sheet if it doesn't exist
