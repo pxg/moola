@@ -56,6 +56,14 @@ def daily_balances_for_month(year, month, start, end, transactions=[]):
     return month_balances
 
 
+def _balance_for_date(date, daily_spend, start_balance, transactions):
+    """
+    Get predicted balance for date given
+    """
+    transaction_amount = _transactions_up_to_day(date.day, transactions)
+    return start_balance - (daily_spend * (date.day - 1)) + transaction_amount
+
+
 def _daily_spend(start_balance, end_balance, transactions, num_days):
     """
     Predicted amount that can be spent each month once transactions have been
@@ -63,6 +71,15 @@ def _daily_spend(start_balance, end_balance, transactions, num_days):
     """
     monthly_spend = _monthly_spend(start_balance, end_balance, transactions)
     return monthly_spend / num_days
+
+
+def _dates_in_month(year, month):
+    """
+    Returns a list of date objects for each date in the month
+    """
+    calendar = Calendar()
+    dates = calendar.itermonthdates(year, month)
+    return [date for date in dates if date.month == month]
 
 
 def _monthly_spend(start_balance, end_balance, transactions=[]):
@@ -74,33 +91,16 @@ def _monthly_spend(start_balance, end_balance, transactions=[]):
     return start_balance - end_balance + transactions_total
 
 
-def _transactions_up_to_day(day, transactions):
-    """
-    Calculate transactions up to the current day of the month
-    """
-    transaction_period = [t.amount for t in transactions if t.day <= day]
-    return _transactions_total(transaction_period)
-
-
 def _transactions_total(transactions):
     """
-    Sum total of transaction amounts
+    Sum of transaction amounts
     """
     return sum([transaction.amount for transaction in transactions])
 
 
-def _balance_for_date(date, daily_spend, start_balance, transactions):
+def _transactions_up_to_day(day, transactions):
     """
-    Get predicted balance for date given
+    Calculate sum of transactions up to the current day of the month
     """
-    transaction_amount = _transactions_up_to_day(date.day, transactions)
-    return start_balance - (daily_spend * (date.day - 1)) + transaction_amount
-
-
-def _dates_in_month(year, month):
-    """
-    Returns a list of date objects for each date in the month
-    """
-    calendar = Calendar()
-    dates = calendar.itermonthdates(year, month)
-    return [date for date in dates if date.month == month]
+    transaction_period = [t.amount for t in transactions if t.day <= day]
+    return _transactions_total(transaction_period)
