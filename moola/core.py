@@ -1,6 +1,5 @@
 from calendar import Calendar
 from collections import namedtuple
-from datetime import datetime
 
 from money import Money as BaseMoney
 
@@ -32,23 +31,16 @@ class Transaction:
 
 def calc_daily_balances_for_month(
         year, month, start_balance, end_balance, transactions=[]):
-    return _calc_daily_balances_for_month(
-        year,
-        month,
-        Money(start_balance),
-        Money(end_balance),
-        transactions)
+    # Cast types to money
+    start_balance = Money(start_balance)
+    end_balance = Money(end_balance)
 
-
-def _calc_daily_balances_for_month(
-        year, month, start_balance, end_balance, transactions=[]):
     dates = get_days_in_month(year, month)
     monthly_spend = _monthly_spend(start_balance, end_balance, transactions)
     daily_spend = monthly_spend / len(dates)
 
     balances = []
     Balance = namedtuple('Balance', 'date balance')
-    # TODO: move loop in outer function
     for date in dates:
         transaction_amount = calc_transactions_up_to_day(
             date.day,
@@ -82,17 +74,6 @@ def calc_transactions_total(transactions):
 # TODO: needs unit tests
 def calc_balance(day, daily_spend, start_balance, transaction_amount):
     return start_balance - (daily_spend * (day - 1)) + transaction_amount
-
-
-# TODO: remove when logic is reworked
-# TODO: needs unit tests
-def format_balance(year, month, index, balance):
-    """
-    Return balance as a tuple containing the date and the amount in pounds and
-    pence.
-    """
-    Balance = namedtuple('Balance', 'date balance')
-    return Balance(datetime(year, month, index + 1), round(balance.amount, 2))
 
 
 def get_days_in_month(year, month):
