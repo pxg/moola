@@ -16,7 +16,7 @@ class Money(BaseMoney):
     def rounded_amount(self):
         """
         Helper method so we don't need to keep casting to decimal. Makes tests
-        easier to read
+        easier to read.
         """
         amount = round(self.amount, 2)
         return int(amount * 100) / 100
@@ -33,8 +33,7 @@ class Transaction:
 def daily_balances_for_month(year, month, start, end, transactions=[]):
     """
     Get the predicted daily balance for each day of the month based on start
-    balance end balance and a given number of finacial transactions.
-    Returns a list of tuples.
+    balance end balance and a given number of financial transactions.
     """
     start_balance = Money(start)
     end_balance = Money(end)
@@ -90,7 +89,6 @@ def _transactions_total(transactions):
     return sum([transaction.amount for transaction in transactions])
 
 
-# TODO3: needs unit tests
 def _balance_for_date(date, daily_spend, start_balance, transactions):
     """
     Get predicted balance for date given
