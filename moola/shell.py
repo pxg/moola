@@ -47,22 +47,6 @@ def _get_monthly_transactions(spreadsheet):
     return transactions
 
 
-def experiment(spreadsheet):
-    worksheet = spreadsheet.worksheet('transactions')
-    return worksheet
-
-
-def experiment2(spreadsheet):
-    worksheet = spreadsheet.worksheet('transactions')
-    return worksheet.get_all_values()
-    # return transaction_data
-    # transactions = []
-    # # TODO: add named splice for skipping headers
-    # for row in transaction_data[1:]:
-    #     transactions.append(Transaction(row[0], row[1], row[2]))
-    # return transactions
-
-
 def _get_google_spreadsheet():
     print('Connecting to Google Docs')
     # TODO: open relative to this file
