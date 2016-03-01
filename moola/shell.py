@@ -52,21 +52,43 @@ def _write_balances_to_spreadsheet(balances):
     # Connect to Google docs and open worksheet
     gc = gspread.authorize(credentials)
     sh = gc.open('Money dev')
+    # TODO: month name for the spreadsheet
     # TODO: create sheet if it doesn't exist
-    wks = sh.get_worksheet(0)
+    worksheet = sh.get_worksheet(0)
 
     # Add header rows
-    wks.update_acell('A1', 'Date')
-    wks.update_acell('B1', 'Predicted Balance')
-    index = 1
+    # worksheet.update_acell('A1', 'Date')
+    # worksheet.update_acell('B1', 'Predicted Balance')
+    # index = 1
 
-    for balance in balances:
-        index += 1
-        date_cell = 'A{}'.format(index)
-        balance_cell = 'B{}'.format(index)
-        # TODO: can we upate in bulk? Will likely be faster
-        wks.update_acell(date_cell, balance.date)
-        wks.update_acell(balance_cell, balance.amount)
+    cell_list = worksheet.range('A1:A{0}'.format(len(balances) + 1))
+    for index, cell in enumerate(cell_list):
+        if index == 0:
+            cell.value = 'Date'
+        else:
+            cell.value = balances[index - 1].date
+    worksheet.update_cells(cell_list)
+
+    cell_list = worksheet.range('B1:B{0}'.format(len(balances) + 1))
+    for index, cell in enumerate(cell_list):
+        if index == 0:
+            cell.value = 'Total Aim'
+        else:
+            cell.value = balances[index - 1].amount
+    worksheet.update_cells(cell_list)
+
+
+    # # for cell in cell_list:
+    # #     cell.value = 'O_o'
+    # worksheet.update_cells(date_cell_list)
+
+    # for balance in balances:
+    #     index += 1
+    #     date_cell = 'A{}'.format(index)
+    #     balance_cell = 'B{}'.format(index)
+    #     # TODO: can we upate in bulk? Will likely be faster
+    #     wks.update_acell(date_cell, balance.date)
+    #     wks.update_acell(balance_cell, balance.amount)
 
     # TODO: can we set formating on the cells?
 
