@@ -52,14 +52,10 @@ def _write_balances_to_spreadsheet(balances):
     # Connect to Google docs and open worksheet
     gc = gspread.authorize(credentials)
     sh = gc.open('Money dev')
+    url = 'https://docs.google.com/spreadsheets/d/{0}/edit'.format(sh.id)
     # TODO: month name for the spreadsheet
     # TODO: create sheet if it doesn't exist
     worksheet = sh.get_worksheet(0)
-
-    # Add header rows
-    # worksheet.update_acell('A1', 'Date')
-    # worksheet.update_acell('B1', 'Predicted Balance')
-    # index = 1
 
     cell_list = worksheet.range('A1:A{0}'.format(len(balances) + 1))
     for index, cell in enumerate(cell_list):
@@ -67,6 +63,7 @@ def _write_balances_to_spreadsheet(balances):
             cell.value = 'Date'
         else:
             cell.value = balances[index - 1].date
+    print('Writing date cells')
     worksheet.update_cells(cell_list)
 
     cell_list = worksheet.range('B1:B{0}'.format(len(balances) + 1))
@@ -75,25 +72,11 @@ def _write_balances_to_spreadsheet(balances):
             cell.value = 'Total Aim'
         else:
             cell.value = balances[index - 1].amount
+    print('Writing amount cells')
     worksheet.update_cells(cell_list)
+    # TODO: can we write just once?
+    print('Spreadsheet updated {0}'.format(url))
 
-
-    # # for cell in cell_list:
-    # #     cell.value = 'O_o'
-    # worksheet.update_cells(date_cell_list)
-
-    # for balance in balances:
-    #     index += 1
-    #     date_cell = 'A{}'.format(index)
-    #     balance_cell = 'B{}'.format(index)
-    #     # TODO: can we upate in bulk? Will likely be faster
-    #     wks.update_acell(date_cell, balance.date)
-    #     wks.update_acell(balance_cell, balance.amount)
-
-    # TODO: can we set formating on the cells?
-
-    print('Spreadsheet updated')
-    print('TODO: print URL here')
 
 # TODO: call from init? I'd like to call command line with "moola"
 if __name__ == '__main__':
