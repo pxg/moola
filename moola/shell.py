@@ -1,4 +1,6 @@
 import json
+import sys
+from pprint import pprint
 
 import gspread
 from oauth2client.client import SignedJwtAssertionCredentials
@@ -12,25 +14,19 @@ def create_sheet_for_month():
     for month
     """
     year, month, start, end = _prompt_user_for_inputs()
-    transactions = _get_monthly_transactions()
+
+    spreadsheet = _get_google_spreadsheet()
+    transactions = _get_monthly_transactions(spreadsheet)
+    # pprint(transactions)
+
     balances = daily_balances_for_month(
         year,
         month,
         start,
         end,
         transactions)
-    _write_balances_to_spreadsheet(balances)
 
-
-def _get_monthly_transactions():
-    """
-    Get monthly transactions from persistent storage
-    """
-    # TODO: add real transactions here
-    # TODO: read from spreadsheet
-    return [
-        Transaction(2, -9.99, 'Netflix'),
-        Transaction(3, -5.00, 'Spotify')]
+    _write_balances_to_spreadsheet(spreadsheet, balances)
 
 
 def _prompt_user_for_inputs():
@@ -39,9 +35,23 @@ def _prompt_user_for_inputs():
     return 2016, 2, 2500, 500
 
 
-def _write_balances_to_spreadsheet(balances):
-    # TODO: move connecting code to different function
-    print('Connecting to Google Docs ...')
+def _get_monthly_transactions(spreadsheet):
+    """
+    Get monthly transactions from persistent storage
+    """
+    worksheet = spreadsheet.worksheet('transactions')
+    print('Reading transactions data')
+    transaction_data = worksheet.get_all_values()
+
+    transactions = []
+    # TODO: add named splice for skipping headers
+    for row in transaction_data[1:]:
+        transactions.append(Transaction(row[0], row[1], row[2]))
+    return transactions
+
+
+def _get_google_spreadsheet():
+    print('Connecting to Google Docs')
     # TODO: open relative to this file
     json_key = json.load(open('./moola/credentials.json'))
     scope = ['https://spreadsheets.google.com/feeds']
@@ -49,13 +59,14 @@ def _write_balances_to_spreadsheet(balances):
         json_key['client_email'],
         json_key['private_key'].encode(),
         scope)
-    # Connect to Google docs and open worksheet
     gc = gspread.authorize(credentials)
-    sh = gc.open('Money dev')
-    url = 'https://docs.google.com/spreadsheets/d/{0}/edit'.format(sh.id)
-    # TODO: month name for the spreadsheet
-    # TODO: create sheet if it doesn't exist
-    worksheet = sh.get_worksheet(0)
+    return gc.open('Money dev')
+
+
+def _write_balances_to_spreadsheet(spreadsheet, balances):
+    # TODO1: use month name to look-up the spreadsheet
+    # TODO2: create sheet if it doesn't exist
+    worksheet = spreadsheet.get_worksheet(0)
 
     cell_list = worksheet.range('A1:A{0}'.format(len(balances) + 1))
     for index, cell in enumerate(cell_list):
@@ -75,6 +86,9 @@ def _write_balances_to_spreadsheet(balances):
     print('Writing amount cells')
     worksheet.update_cells(cell_list)
     # TODO: can we write just once?
+
+    url = 'https://docs.google.com/spreadsheets/d/{0}/edit'.format(
+        spreadsheet.id)
     print('Spreadsheet updated {0}'.format(url))
 
 

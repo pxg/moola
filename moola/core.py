@@ -25,9 +25,13 @@ class Money(BaseMoney):
 class Transaction:
 
     def __init__(self, day, amount, description):
-        self.day = day
+        self.day = int(day)
         self.amount = Money(amount)
         self.description = description
+
+    def __repr__(self):
+        return '<Transaction object ({}, {}, {})>'.format(
+            self.day, self.amount, self.description)
 
 
 def daily_balances_for_month(year, month, start, end, transactions=[]):
