@@ -31,12 +31,19 @@ class Transaction:
 
 
 def daily_balances_for_month(year, month, start, end, transactions=[]):
+    """
+    Get the predicted daily balance for each day of the month based on start
+    balance end balance and a given number of finacial transactions.
+    Returns a list of tuples.
+    """
     start_balance = Money(start)
     end_balance = Money(end)
     dates = _dates_in_month(year, month)
-    # TODO: Monthly spend only used to calc daily spend so move out
-    monthly_spend = _monthly_spend(start_balance, end_balance, transactions)
-    daily_spend = monthly_spend / len(dates)
+    daily_spend = _daily_spend(
+        start_balance,
+        end_balance,
+        transactions,
+        num_days=len(dates))
 
     month_balances = []
     Balance = namedtuple('Balance', 'date balance')
@@ -50,15 +57,19 @@ def daily_balances_for_month(year, month, start, end, transactions=[]):
     return month_balances
 
 
-# TODO: write tests
 def _daily_spend(start_balance, end_balance, transactions, num_days):
-    pass
+    """
+    Predicted amount that can be spent each month once transactions have been
+    taken into account
+    """
+    monthly_spend = _monthly_spend(start_balance, end_balance, transactions)
+    return monthly_spend / num_days
 
 
 def _monthly_spend(start_balance, end_balance, transactions=[]):
     """
-    Amount that can be spent each month once transactions have been taken into
-    account
+    Predicted amount that can be spent each month once transactions have been
+    taken into account
     """
     transactions_total = _transactions_total(transactions)
     return start_balance - end_balance + transactions_total
@@ -79,7 +90,7 @@ def _transactions_total(transactions):
     return sum([transaction.amount for transaction in transactions])
 
 
-# TODO: needs unit tests
+# TODO3: needs unit tests
 def _balance_for_date(date, daily_spend, start_balance, transactions):
     """
     Get predicted balance for date given
