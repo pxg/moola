@@ -45,7 +45,8 @@ def daily_balances_for_month(year, month, start, end, transactions=[]):
         num_days=len(dates))
 
     month_balances = []
-    Balance = namedtuple('Balance', 'date balance')
+
+    Balance = namedtuple('Balance', 'date amount')
     for date in dates:
         balance = _balance_for_date(
             date,

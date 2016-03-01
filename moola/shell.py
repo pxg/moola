@@ -36,35 +36,40 @@ def _get_monthly_transactions():
 def _prompt_user_for_inputs():
     # TODO: prompt user for month, year, start and end balance
     # TODO: can this be tested easily
-    return 2016, 2, 2500, 200
+    return 2016, 2, 2500, 500
 
 
 def _write_balances_to_spreadsheet(balances):
+    # TODO: move connecting code to different function
     print('Connecting to Google Docs ...')
-    json_key = json.load(open('credentials.json'))
+    # TODO: open relative to this file
+    json_key = json.load(open('./moola/credentials.json'))
     scope = ['https://spreadsheets.google.com/feeds']
     credentials = SignedJwtAssertionCredentials(
         json_key['client_email'],
         json_key['private_key'].encode(),
         scope)
-    # Connect to Google docs
+    # Connect to Google docs and open worksheet
     gc = gspread.authorize(credentials)
-    print(gc)
     sh = gc.open('Money dev')
-    print(sh)
+    # TODO: create sheet if it doesn't exist
     wks = sh.get_worksheet(0)
-    print(wks)
 
-    # Open a worksheet from spreadsheet with one shot
-    # url = 'https://docs.google.com/spreadsheets/d/1yBMA3l0aU66Sf7d3zwQ4VnqONKR-pd0XCfF-p3x28s0/edit#gid=459459683'
-    # # wks = gc.open(url).sheet1
-    # wks = gc.open('Money Dev').sheet1
-    wks.update_acell('B2', 'blah blah')
-    # # Fetch a cell range
-    # cell_list = wks.range('A1:B7')
+    # Add header rows
+    wks.update_acell('A1', 'Date')
+    wks.update_acell('B1', 'Predicted Balance')
+    index = 1
 
-    # TODO: Create sheet if it doesn't exist
-    # TODO: Write data
+    for balance in balances:
+        index += 1
+        date_cell = 'A{}'.format(index)
+        balance_cell = 'B{}'.format(index)
+        # TODO: can we upate in bulk? Will likely be faster
+        wks.update_acell(date_cell, balance.date)
+        wks.update_acell(balance_cell, balance.amount)
+
+    # TODO: can we set formating on the cells?
+
     print('Spreadsheet updated')
     print('TODO: print URL here')
 
