@@ -17,7 +17,6 @@ def create_sheet_for_month():
 
     spreadsheet = _get_google_spreadsheet()
     transactions = _get_monthly_transactions(spreadsheet)
-    # pprint(transactions)
 
     balances = daily_balances_for_month(
         year,
