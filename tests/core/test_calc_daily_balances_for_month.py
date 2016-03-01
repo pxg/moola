@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date
 from decimal import Decimal
 
 from moola.core import Transaction, calc_daily_balances_for_month
@@ -31,7 +31,7 @@ def test_calc_daily_balances_for_month_first_item_correct_date():
         start_balance=2500,
         end_balance=500)
 
-    assert amounts[0].date == datetime(2016, 2, 1)
+    assert amounts[0].date == date(2016, 2, 1)
 
 
 def test_calc_daily_balances_for_month_last_item_correct_date():
@@ -41,7 +41,8 @@ def test_calc_daily_balances_for_month_last_item_correct_date():
         start_balance=2500,
         end_balance=500)
 
-    assert amounts[-1].date == datetime(2016, 2, 29)
+    # TODO: can we remove the zeros?
+    assert amounts[-1].date == date(2016, 2, 29)
 
 
 def test_calc_daily_balances_for_month_first_item_correct_balance():
@@ -61,7 +62,7 @@ def test_calc_daily_balances_for_month_second_item_correct_balance():
         start_balance=2500,
         end_balance=500)
 
-    assert amounts[1].balance == Decimal('2431.03')
+    assert amounts[1].balance == 2431.03
 
 
 def test_calc_daily_balances_for_month_last_item_correct_balance():
@@ -71,7 +72,7 @@ def test_calc_daily_balances_for_month_last_item_correct_balance():
         start_balance=2500,
         end_balance=500)
 
-    assert amounts[-1].balance == Decimal('568.97')
+    assert amounts[-1].balance == 568.97
 
 
 def test_calc_daily_balances_correct_balance_with_one_transaction():

@@ -32,44 +32,37 @@ class Transaction:
 
 def calc_daily_balances_for_month(
         year, month, start_balance, end_balance, transactions=[]):
-    balances = _calc_daily_balances_for_month(
+    return _calc_daily_balances_for_month(
         year,
         month,
         Money(start_balance),
         Money(end_balance),
         transactions)
 
-    formatted_balances = []
-    for index, balance in enumerate(balances):
-        formatted_balances.append(format_balance(year, month, index, balance))
-    return formatted_balances
-
 
 def _calc_daily_balances_for_month(
         year, month, start_balance, end_balance, transactions=[]):
     dates = get_days_in_month(year, month)
-
-    # TODO: calc monthly spend in function which takes transactions
-    transactions_total = calc_transactions_total(transactions)
-    monthly_spend = start_balance - end_balance + transactions_total
-
+    monthly_spend = _monthly_spend(start_balance, end_balance, transactions)
     daily_spend = monthly_spend / len(dates)
 
     balances = []
-    # TODO: add datetime and balance in this function.
+    Balance = namedtuple('Balance', 'date balance')
     # TODO: move loop in outer function
-    for day in dates:
-        transaction_amount = calc_transactions_up_to_day(day.day, transactions)
+    for date in dates:
+        transaction_amount = calc_transactions_up_to_day(
+            date.day,
+            transactions)
         balance = calc_balance(
-            day.day,
+            date.day,
             daily_spend,
             start_balance,
             transaction_amount)
-        balances.append(balance)
+        balances.append(Balance(date, balance.rounded_amount))
     return balances
 
 
-def _calc_monthly_spend(start_balance, end_balance, transactions=[]):
+def _monthly_spend(start_balance, end_balance, transactions=[]):
     transactions_total = calc_transactions_total(transactions)
     return start_balance - end_balance + transactions_total
 
