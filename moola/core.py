@@ -15,7 +15,8 @@ class Money(BaseMoney):
     @property
     def rounded_amount(self):
         """
-        Helper method to make tests easier to read
+        Helper method so we don't need to keep casting to decimal. Makes tests
+        easier to read
         """
         amount = round(self.amount, 2)
         return int(amount * 100) / 100
@@ -29,54 +30,68 @@ class Transaction:
         self.description = description
 
 
-def calc_daily_balances_for_month(
-        year, month, start_balance, end_balance, transactions=[]):
-    # Cast types to money
-    start_balance = Money(start_balance)
-    end_balance = Money(end_balance)
-
-    dates = get_days_in_month(year, month)
+def daily_balances_for_month(year, month, start, end, transactions=[]):
+    start_balance = Money(start)
+    end_balance = Money(end)
+    dates = _dates_in_month(year, month)
+    # TODO: Monthly spend only used to calc daily spend so move out
     monthly_spend = _monthly_spend(start_balance, end_balance, transactions)
     daily_spend = monthly_spend / len(dates)
 
-    balances = []
+    month_balances = []
     Balance = namedtuple('Balance', 'date balance')
     for date in dates:
-        transaction_amount = calc_transactions_up_to_day(
-            date.day,
-            transactions)
-        balance = calc_balance(
-            date.day,
+        balance = _balance_for_date(
+            date,
             daily_spend,
             start_balance,
-            transaction_amount)
-        balances.append(Balance(date, balance.rounded_amount))
-    return balances
+            transactions)
+        month_balances.append(Balance(date, balance.rounded_amount))
+    return month_balances
+
+
+# TODO: write tests
+def _daily_spend(start_balance, end_balance, transactions, num_days):
+    pass
 
 
 def _monthly_spend(start_balance, end_balance, transactions=[]):
-    transactions_total = calc_transactions_total(transactions)
+    """
+    Amount that can be spent each month once transactions have been taken into
+    account
+    """
+    transactions_total = _transactions_total(transactions)
     return start_balance - end_balance + transactions_total
 
 
-def calc_transactions_up_to_day(day, transactions):
+def _transactions_up_to_day(day, transactions):
     """
     Calculate transactions up to the current day of the month
     """
     transaction_period = [t.amount for t in transactions if t.day <= day]
-    return calc_transactions_total(transaction_period)
+    return _transactions_total(transaction_period)
 
 
-def calc_transactions_total(transactions):
+def _transactions_total(transactions):
+    """
+    Sum total of transaction amounts
+    """
     return sum([transaction.amount for transaction in transactions])
 
 
 # TODO: needs unit tests
-def calc_balance(day, daily_spend, start_balance, transaction_amount):
-    return start_balance - (daily_spend * (day - 1)) + transaction_amount
+def _balance_for_date(date, daily_spend, start_balance, transactions):
+    """
+    Get predicted balance for date given
+    """
+    transaction_amount = _transactions_up_to_day(date.day, transactions)
+    return start_balance - (daily_spend * (date.day - 1)) + transaction_amount
 
 
-def get_days_in_month(year, month):
+def _dates_in_month(year, month):
+    """
+    Returns a list of date objects for each date in the month
+    """
     calendar = Calendar()
     dates = calendar.itermonthdates(year, month)
     return [date for date in dates if date.month == month]
