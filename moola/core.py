@@ -47,6 +47,7 @@ def daily_balances_for_month(year, month, start, end, transactions=[]):
         end_balance,
         transactions,
         num_days=len(dates))
+    print('Daily spend £{}'.format(daily_spend))
 
     month_balances = []
 

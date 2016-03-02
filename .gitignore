@@ -1,4 +1,8 @@
+# File I don't want publically available
 TODO.txt
+credentials.json
+
+# Python cache files
 .cache
 *.egg-info
-credentials.json
+__pycache__

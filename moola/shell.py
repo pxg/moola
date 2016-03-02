@@ -32,6 +32,7 @@ def _prompt_user_for_inputs():
     # TODO: prompt user for month, year, start and end balance
     # TODO: can this be tested easily
     return 2016, 2, 2500, 500
+    # return 2016, 3, 1345.22, -654.78
 
 
 def _get_monthly_transactions(spreadsheet):
@@ -40,9 +41,9 @@ def _get_monthly_transactions(spreadsheet):
     """
     print('Reading transactions data')
     worksheet = spreadsheet.worksheet('transactions')
-    transaction_data = worksheet.get_all_values()
-    no_headers = slice(1, len(transaction_data))
-    return [Transaction(*row) for row in transaction_data[no_headers]]
+    transaction_data_with_headers = worksheet.get_all_values()
+    transaction_data = transaction_data_with_headers[1:]
+    return [Transaction(*row) for row in transaction_data]
 
 
 def _get_google_spreadsheet():
