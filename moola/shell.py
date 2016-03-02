@@ -96,8 +96,16 @@ def _write_balances_to_spreadsheet(spreadsheet, balances, year, month):
 
 
 def _populate_cells(cells, balances):
-    # TODO: write headers 'Date' 'Total Aim'
-    for index, balance in enumerate(balances):
-        cells[index * 2].value = balance.date
-        cells[(index * 2) + 1].value = balance.amount
+    # TODO: populate_next_cell function
+    index = 0
+    cells[index].value = 'Date'
+    index += 1
+    cells[index].value = 'Total Aim'
+    index += 1
+
+    for balance in balances:
+        cells[index].value = balance.date
+        index += 1
+        cells[index].value = balance.amount
+        index += 1
     return cells
