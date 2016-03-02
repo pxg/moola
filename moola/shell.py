@@ -97,6 +97,6 @@ def _write_balances_to_spreadsheet(spreadsheet, balances, year, month):
     print('Spreadsheet updated {0}'.format(url))
 
 
-# TODO: call from init? I'd like to call command line with "moola"
-if __name__ == '__main__':
-    create_sheet_for_month()
+# # TODO: call from init? I'd like to call command line with "moola"
+# if __name__ == '__main__':
+#     create_sheet_for_month()

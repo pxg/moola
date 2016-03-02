@@ -16,10 +16,14 @@ else:
     raise RuntimeError('Unable to find version string in %s.' % (VERSIONFILE,))
 
 
-setup(name='moola',
-      version=verstr,
-      description='moola money tools',
-      classifiers=['Private :: Do Not Upload'],
-      packages=find_packages(),
-      include_package_data=True,
-      zip_safe=False)
+setup(
+    name='moola',
+    version=verstr,
+    description='moola money tools',
+    classifiers=['Private :: Do Not Upload'],
+    packages=find_packages(),
+    include_package_data=True,
+    zip_safe=False,
+    entry_points={
+        'console_scripts': ['moola = moola.shell:create_sheet_for_month']
+    })
