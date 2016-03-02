@@ -3,3 +3,4 @@ money==1.2.2
 pytest==2.8.7
 pyOpenSSL==0.15.1  # For Google API autorisation
 oauth2client==1.5.2  # Newer version has problems
+click==6.3

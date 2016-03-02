@@ -65,7 +65,6 @@ def _get_monthly_transactions(spreadsheet):
 
 def _get_google_spreadsheet(name):
     print('Connecting to Google Docs')
-    # TODO: open relative to this file
     json_key = json.load(open('./moola/credentials.json'))
     scope = ['https://spreadsheets.google.com/feeds']
     credentials = SignedJwtAssertionCredentials(
