@@ -96,16 +96,20 @@ def _write_balances_to_spreadsheet(spreadsheet, balances, year, month):
 
 
 def _populate_cells(cells, balances):
-    # TODO: populate_next_cell function
-    index = 0
-    cells[index].value = 'Date'
-    index += 1
-    cells[index].value = 'Total Aim'
-    index += 1
+    index = _populate_cell('Date', cells, index=0)
+    index = _populate_cell('Total Aim', cells, index)
 
     for balance in balances:
-        cells[index].value = balance.date
-        index += 1
-        cells[index].value = balance.amount
-        index += 1
+        index = _populate_cell(balance.date, cells, index)
+        index = _populate_cell(balance.amount, cells, index)
     return cells
+
+
+def _populate_cell(value, cells, index):
+    """
+    Populate the cells and return the updated index
+    """
+    cells[index].value = value
+    # TODO: could we use next?
+    index += 1
+    return index
