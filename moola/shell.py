@@ -4,9 +4,8 @@ import gspread
 from gspread.exceptions import WorksheetNotFound
 from oauth2client.client import SignedJwtAssertionCredentials
 
-# TODO: can we use relative imports here?
-from moola.core import daily_balances_for_month, Transaction
-from moola.utils import get_spreadsheet_name
+from .core import daily_balances_for_month, Transaction
+from .utils import get_spreadsheet_name
 
 
 # TODO: tests
@@ -95,8 +94,3 @@ def _write_balances_to_spreadsheet(spreadsheet, balances, year, month):
     url = 'https://docs.google.com/spreadsheets/d/{0}/edit'.format(
         spreadsheet.id)
     print('Spreadsheet updated {0}'.format(url))
-
-
-# # TODO: call from init? I'd like to call command line with "moola"
-# if __name__ == '__main__':
-#     create_sheet_for_month()
