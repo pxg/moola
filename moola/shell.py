@@ -1,5 +1,4 @@
 import json
-import sys
 
 import click
 import gspread
@@ -15,6 +14,11 @@ from .utils import (
 
 @click.command()
 @click.option(
+    '--environment',
+    default='development',
+    prompt='Spreadsheet to use',
+    type=click.Choice(['development', 'production']))
+@click.option(
     '--year',
     default=current_year(),
     prompt='Year to use')
@@ -25,13 +29,17 @@ from .utils import (
     type=click.IntRange(1, 12))
 @click.option('--start', default=2500.00, prompt='Start Balance')
 @click.option('--end', default=500.00, prompt='End Balance')
-# TODO: prompt for dev or production
-def create_sheet_for_month(year, month, start, end):
+def create_sheet_for_month(year, month, start, end, environment):
     """
     Prompt user for required values then create Google spreadsheet with amounts
     for month
     """
-    spreadsheet = _get_google_spreadsheet()
+    if environment == 'production':
+        name = 'Money'
+    else:
+        name = 'Money dev'
+
+    spreadsheet = _get_google_spreadsheet(name)
     transactions = _get_monthly_transactions(spreadsheet)
 
     balances = daily_balances_for_month(
@@ -42,14 +50,6 @@ def create_sheet_for_month(year, month, start, end):
         transactions)
 
     _write_balances_to_spreadsheet(spreadsheet, balances, year, month)
-
-
-# TODO: tests
-def _prompt_user_for_inputs():
-    # TODO: prompt user for month, year, start and end balance
-    # TODO: can this be tested easily
-    # return 2016, 3, 2500, 500
-    return 2016, 3, 1345.22 + 100 - 12.12, -654.78
 
 
 def _get_monthly_transactions(spreadsheet):
@@ -63,7 +63,7 @@ def _get_monthly_transactions(spreadsheet):
     return [Transaction(*row) for row in transaction_data]
 
 
-def _get_google_spreadsheet():
+def _get_google_spreadsheet(name):
     print('Connecting to Google Docs')
     # TODO: open relative to this file
     json_key = json.load(open('./moola/credentials.json'))
@@ -73,7 +73,7 @@ def _get_google_spreadsheet():
         json_key['private_key'].encode(),
         scope)
     gc = gspread.authorize(credentials)
-    return gc.open('Money Dev')
+    return gc.open(name)
 
 
 # TODO: tests. Consider splitting or returning cell values first

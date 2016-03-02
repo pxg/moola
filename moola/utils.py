@@ -6,7 +6,7 @@ def current_month_number():
     """
     Returns list of strings as click requires this
     """
-    return int(datetime.now().month)
+    return datetime.now().month
 
 
 def current_year():
