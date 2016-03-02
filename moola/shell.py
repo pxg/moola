@@ -87,25 +87,17 @@ def _write_balances_to_spreadsheet(spreadsheet, balances, year, month):
         # TODO: can we make it the most recent spreadsheet on the tabs?
         worksheet = spreadsheet.add_worksheet(title=name, rows='32', cols='7')
 
-    cell_list = worksheet.range('A1:A{0}'.format(len(balances) + 1))
-    for index, cell in enumerate(cell_list):
-        if index == 0:
-            cell.value = 'Date'
-        else:
-            cell.value = balances[index - 1].date
-    print('Writing date cells')
-    worksheet.update_cells(cell_list)
-
-    cell_list = worksheet.range('B1:B{0}'.format(len(balances) + 1))
-    for index, cell in enumerate(cell_list):
-        if index == 0:
-            cell.value = 'Total Aim'
-        else:
-            cell.value = balances[index - 1].amount
-    print('Writing amount cells')
-    worksheet.update_cells(cell_list)
-    # TODO: can we write just once?
+    cells = worksheet.range('A1:B{0}'.format(len(balances) + 1))
+    worksheet.update_cells(_populate_cells(cells, balances))
 
     url = 'https://docs.google.com/spreadsheets/d/{0}/edit'.format(
         spreadsheet.id)
     print('Spreadsheet updated {0}'.format(url))
+
+
+def _populate_cells(cells, balances):
+    # TODO: write headers 'Date' 'Total Aim'
+    for index, balance in enumerate(balances):
+        cells[index * 2].value = balance.date
+        cells[(index * 2) + 1].value = balance.amount
+    return cells
