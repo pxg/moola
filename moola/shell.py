@@ -1,9 +1,12 @@
 import json
 
 import gspread
+from gspread.exceptions import WorksheetNotFound
 from oauth2client.client import SignedJwtAssertionCredentials
 
+# TODO: can we use relative imports here?
 from moola.core import daily_balances_for_month, Transaction
+from moola.utils import get_spreadsheet_name
 
 
 # TODO: tests
@@ -24,14 +27,14 @@ def create_sheet_for_month():
         end,
         transactions)
 
-    _write_balances_to_spreadsheet(spreadsheet, balances)
+    _write_balances_to_spreadsheet(spreadsheet, balances, year, month)
 
 
 # TODO: tests
 def _prompt_user_for_inputs():
     # TODO: prompt user for month, year, start and end balance
     # TODO: can this be tested easily
-    return 2016, 2, 2500, 500
+    return 2016, 3, 2500, 500
     # return 2016, 3, 1345.22, -654.78
 
 
@@ -60,10 +63,15 @@ def _get_google_spreadsheet():
 
 
 # TODO: tests. Consider splitting or returning cell values first
-def _write_balances_to_spreadsheet(spreadsheet, balances):
-    # TODO1: use month name to look-up the spreadsheet
-    # TODO2: create sheet if it doesn't exist
-    worksheet = spreadsheet.get_worksheet(0)
+def _write_balances_to_spreadsheet(spreadsheet, balances, year, month):
+    name = get_spreadsheet_name(year, month)
+    print('Worksheet name {}'.format(name))
+    try:
+        worksheet = spreadsheet.worksheet(name)
+    except WorksheetNotFound:
+        print('Not found creating worksheet')
+        # TODO: can we make it the most recent spreadsheet on the tabs?
+        worksheet = spreadsheet.add_worksheet(title=name, rows='32', cols='7')
 
     cell_list = worksheet.range('A1:A{0}'.format(len(balances) + 1))
     for index, cell in enumerate(cell_list):
