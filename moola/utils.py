@@ -15,4 +15,4 @@ def current_month_number():
 
 
 def current_year():
-    return 2017
+    return datetime.now().year
