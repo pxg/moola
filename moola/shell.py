@@ -1,20 +1,37 @@
 import json
 
+import click
 import gspread
+import sys
+from click import Choice
 from gspread.exceptions import WorksheetNotFound
 from oauth2client.client import SignedJwtAssertionCredentials
 
 from .core import daily_balances_for_month, Transaction
-from .utils import get_spreadsheet_name
+from .utils import (
+    current_month_number,
+    current_year,
+    get_spreadsheet_name,
+    months_names)
 
 
-# TODO: tests
-def create_sheet_for_month():
+@click.command()
+@click.option(
+    '--year', default=current_year(), prompt='Year to use')
+@click.option(
+    '--month', default=current_month_number(), prompt='Number of month to use',
+    type=Choice(months_names()))
+def create_sheet_for_month(year, month):
     """
     Prompt user for required values then create Google spreadsheet with amounts
     for month
     """
-    year, month, start, end = _prompt_user_for_inputs()
+    # year, month, start, end = _prompt_user_for_inputs()
+    print(year)
+    print(month)
+    # TODO: add start/end balances
+    # TODO: change month into month_number. utils
+    sys.exit()
 
     spreadsheet = _get_google_spreadsheet()
     transactions = _get_monthly_transactions(spreadsheet)
@@ -33,8 +50,8 @@ def create_sheet_for_month():
 def _prompt_user_for_inputs():
     # TODO: prompt user for month, year, start and end balance
     # TODO: can this be tested easily
-    return 2016, 3, 2500, 500
-    # return 2016, 3, 1345.22, -654.78
+    # return 2016, 3, 2500, 500
+    return 2016, 3, 1345.22 + 100 - 12.12, -654.78
 
 
 def _get_monthly_transactions(spreadsheet):
@@ -58,7 +75,7 @@ def _get_google_spreadsheet():
         json_key['private_key'].encode(),
         scope)
     gc = gspread.authorize(credentials)
-    return gc.open('Money dev')
+    return gc.open('Money')
 
 
 # TODO: tests. Consider splitting or returning cell values first
