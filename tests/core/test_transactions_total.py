@@ -1,4 +1,5 @@
-from moola.core import Transaction, _transactions_total
+from moola.core import _transactions_total
+from moola.models import Transaction
 
 
 def test_transactions_total_no_transactions():

@@ -1,6 +1,7 @@
 from decimal import Decimal
 
-from moola.core import Transaction, _transactions_up_to_day
+from moola.core import _transactions_up_to_day
+from moola.models import Transaction
 
 
 def test_transactions_up_to_day_no_transactions():

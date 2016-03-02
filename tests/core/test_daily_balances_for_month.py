@@ -1,6 +1,7 @@
 from datetime import date
 
-from moola.core import Transaction, daily_balances_for_month
+from moola.core import daily_balances_for_month
+from moola.models import Transaction
 
 
 def test_daily_balances_for_month_number_of_days():

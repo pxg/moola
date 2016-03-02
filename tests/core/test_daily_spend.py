@@ -1,4 +1,5 @@
-from moola.core import _daily_spend, Transaction, Money
+from moola.core import _daily_spend
+from moola.models import Transaction, Money
 
 
 def test_daily_spend_empty_transactinons():

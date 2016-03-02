@@ -1,6 +1,7 @@
 from datetime import date
 
-from moola.core import _balance_for_date, Money, Transaction
+from moola.core import _balance_for_date
+from moola.models import Money, Transaction
 
 
 def test_balance_for_date_no_transactions():

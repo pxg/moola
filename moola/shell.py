@@ -5,7 +5,8 @@ import gspread
 from gspread.exceptions import WorksheetNotFound
 from oauth2client.client import SignedJwtAssertionCredentials
 
-from .core import daily_balances_for_month, Transaction
+from .core import daily_balances_for_month
+from .models import Transaction
 from .utils import (
     current_month_number,
     current_year,

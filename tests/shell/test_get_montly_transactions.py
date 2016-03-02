@@ -2,7 +2,7 @@ import pytest
 from mock import Mock
 
 from moola.shell import _get_monthly_transactions
-from moola.core import Transaction, Money
+from moola.models import Transaction, Money
 
 
 @pytest.fixture

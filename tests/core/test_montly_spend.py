@@ -1,4 +1,5 @@
-from moola.core import _monthly_spend, Money, Transaction
+from moola.core import _monthly_spend
+from moola.models import Money, Transaction
 
 
 def test_calc_monthly_spend_just_balances():
