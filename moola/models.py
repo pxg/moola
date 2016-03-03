@@ -1,13 +1,14 @@
 from money import Money as BaseMoney
+from .utils import clean_amount
 
 
 class Money(BaseMoney):
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, amount, *args, **kwargs):
         """
         Call the super class constructor with the currency set to pounds
         """
-        super().__init__(*(args[0], 'GBP'), **kwargs)
+        super().__init__(amount, currency='GBP', **kwargs)
 
     @property
     def rounded_amount(self):
@@ -22,8 +23,8 @@ class Money(BaseMoney):
 class Transaction:
 
     def __init__(self, day, amount, description):
+        self.amount = Money(clean_amount(amount))
         self.day = int(day)
-        self.amount = Money(amount)
         self.description = description
 
     def __repr__(self):

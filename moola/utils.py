@@ -2,6 +2,13 @@ import calendar
 from datetime import datetime
 
 
+def clean_amount(amount):
+    """
+    Strip potential dodgy characters from amount
+    """
+    return ''.join([c for c in str(amount) if c in '1234567890.-'])
+
+
 def current_month_number():
     """
     Returns list of strings as click requires this
