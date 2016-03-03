@@ -35,6 +35,7 @@ def create_sheet_for_month(year, month, start, end, environment):
     Prompt user for required values then create Google spreadsheet with amounts
     for month
     """
+    # TODO: validate year values here, could be any integer
     if environment == 'production':
         name = 'Money'
     else:
