@@ -1,7 +1,14 @@
+import pytest
+
 from moola.shell import create_sheet_for_month, delete_worksheet
 
+slow = pytest.mark.skipif(
+    not pytest.config.getoption("--runslow"),
+    reason="need --runslow option to run"
+)
 
-# TODO: run slow decorator
+
+@slow
 def test_create_sheet_for_month_success():
     """
     This test is the only one which actually connects to the Google API, do not
