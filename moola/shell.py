@@ -13,23 +13,23 @@ from .utils import (
     get_worksheet_name)
 
 
-@click.command()
-@click.option(
-    '--environment',
-    default='development',
-    prompt='Spreadsheet to use',
-    type=click.Choice(['development', 'production']))
-@click.option(
-    '--year',
-    default=current_year(),
-    prompt='Year to use')
-@click.option(
-    '--month',
-    default=current_month_number(),
-    prompt='Number of month to use (1=Jan, 2=Feb, etc)',
-    type=click.IntRange(1, 12))
-@click.option('--start', default=2500.00, prompt='Start Balance')
-@click.option('--end', default=500.00, prompt='End Balance')
+# @click.command()
+# @click.option(
+#     '--environment',
+#     default='development',
+#     prompt='Spreadsheet to use',
+#     type=click.Choice(['development', 'test', 'production']))
+# @click.option(
+#     '--year',
+#     default=current_year(),
+#     prompt='Year to use')
+# @click.option(
+#     '--month',
+#     default=current_month_number(),
+#     prompt='Number of month to use (1=Jan, 2=Feb, etc)',
+#     type=click.IntRange(1, 12))
+# @click.option('--start', default=2500.00, prompt='Start Balance')
+# @click.option('--end', default=500.00, prompt='End Balance')
 def create_sheet_for_month(year, month, start, end, environment):
     """
     Prompt user for required values then create Google spreadsheet with amounts
@@ -38,6 +38,8 @@ def create_sheet_for_month(year, month, start, end, environment):
     # TODO: validate year values here, could be any integer
     if environment == 'production':
         name = 'Money'
+    elif environment == 'test':
+        name = 'Money test'
     else:
         name = 'Money dev'
 
@@ -51,8 +53,26 @@ def create_sheet_for_month(year, month, start, end, environment):
         end,
         transactions)
 
-    _write_balances_to_spreadsheet(spreadsheet, balances, year, month)
+    worksheet = _write_balances_to_spreadsheet(
+        spreadsheet,
+        balances,
+        year,
+        month)
     _print_spreadsheet_url(spreadsheet)
+    return worksheet
+
+
+def delete_worksheet(year, month):
+    """
+    Function just used by end to end test to make sure we're writing to a fresh
+    worksheet
+    """
+    spreadsheet = _get_google_spreadsheet('Money test')
+    try:
+        worksheet = spreadsheet.worksheet(get_worksheet_name(year, month))
+        spreadsheet.del_worksheet(worksheet)
+    except WorksheetNotFound:
+        pass
 
 
 def _print_spreadsheet_url(spreadsheet):
@@ -99,6 +119,7 @@ def _write_balances_to_spreadsheet(spreadsheet, balances, year, month):
 
     cells = worksheet.range('A1:B{0}'.format(len(balances) + 1))
     worksheet.update_cells(_set_cells(cells, balances))
+    return worksheet
 
 
 def _set_cells(cells, balances):
