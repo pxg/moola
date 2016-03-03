@@ -8,4 +8,5 @@ dependencies:
 
 test:
   override:
-    - py.test tests
+    - mkdir -p $CIRCLE_TEST_REPORTS/py.test
+    - py.test tests --junitxml=$CIRCLE_TEST_REPORTS/py.test/moola.xml
