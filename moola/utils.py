@@ -13,5 +13,5 @@ def current_year():
     return datetime.now().year
 
 
-def get_spreadsheet_name(year, month):
+def get_worksheet_name(year, month):
     return '{} {}'.format(calendar.month_name[month], year)

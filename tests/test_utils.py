@@ -4,15 +4,15 @@ from mock import patch
 from moola.utils import (
     current_month_number,
     current_year,
-    get_spreadsheet_name)
+    get_worksheet_name)
 
 
 def test_get_spreadsheet_name_feb():
-    assert get_spreadsheet_name(2016, 2) == 'February 2016'
+    assert get_worksheet_name(2016, 2) == 'February 2016'
 
 
-def test_get_spreadsheet_name_july():
-    assert get_spreadsheet_name(1983, 7) == 'July 1983'
+def test_get_worksheet_name_july():
+    assert get_worksheet_name(1983, 7) == 'July 1983'
 
 
 def test_current_month_number():

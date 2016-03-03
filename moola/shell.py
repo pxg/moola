@@ -10,7 +10,7 @@ from .models import Transaction
 from .utils import (
     current_month_number,
     current_year,
-    get_spreadsheet_name)
+    get_worksheet_name)
 
 
 @click.command()
@@ -51,6 +51,13 @@ def create_sheet_for_month(year, month, start, end, environment):
         transactions)
 
     _write_balances_to_spreadsheet(spreadsheet, balances, year, month)
+    _print_spreadsheet_url(spreadsheet)
+
+
+def _print_spreadsheet_url(spreadsheet):
+    url = 'https://docs.google.com/spreadsheets/d/{0}/edit'.format(
+        spreadsheet.id)
+    print('Spreadsheet updated {0}'.format(url))
 
 
 def _get_monthly_transactions(spreadsheet):
@@ -76,9 +83,11 @@ def _get_google_spreadsheet(name):
     return gc.open(name)
 
 
-# TODO: tests. Consider splitting or returning cell values first
 def _write_balances_to_spreadsheet(spreadsheet, balances, year, month):
-    name = get_spreadsheet_name(year, month)
+    """
+    Create the worksheet if it doesn't exist then update it's values.
+    """
+    name = get_worksheet_name(year, month)
     print('Worksheet name {}'.format(name))
     try:
         worksheet = spreadsheet.worksheet(name)
@@ -88,28 +97,27 @@ def _write_balances_to_spreadsheet(spreadsheet, balances, year, month):
         worksheet = spreadsheet.add_worksheet(title=name, rows='32', cols='7')
 
     cells = worksheet.range('A1:B{0}'.format(len(balances) + 1))
-    worksheet.update_cells(_populate_cells(cells, balances))
-
-    url = 'https://docs.google.com/spreadsheets/d/{0}/edit'.format(
-        spreadsheet.id)
-    print('Spreadsheet updated {0}'.format(url))
+    worksheet.update_cells(_set_cells(cells, balances))
 
 
-def _populate_cells(cells, balances):
-    index = _populate_cell('Date', cells, index=0)
-    index = _populate_cell('Total Aim', cells, index)
+def _set_cells(cells, balances):
+    """
+    Populate cells with headers and values from balances
+    """
+    set_cells = []
+    set_cells.append(_next_cell_set_value('Date', cells))
+    set_cells.append(_next_cell_set_value('Total Aim', cells))
 
     for balance in balances:
-        index = _populate_cell(balance.date, cells, index)
-        index = _populate_cell(balance.amount, cells, index)
-    return cells
+        set_cells.append(_next_cell_set_value(balance.date, cells))
+        set_cells.append(_next_cell_set_value(balance.amount, cells))
+    return set_cells
 
 
-def _populate_cell(value, cells, index):
+def _next_cell_set_value(value, cells):
     """
-    Populate the cells and return the updated index
+    Get the next cells to populate set it's value and return
     """
-    cells[index].value = value
-    # TODO: could we use next?
-    index += 1
-    return index
+    cell = cells.pop(0)
+    cell.value = value
+    return cell
