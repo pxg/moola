@@ -1,7 +1,11 @@
+machine:
+  python:
+    version: 3.4.3
+
 dependencies:
   post:
     - pip install -e .
 
 test:
   override:
-    - py.test
+    - py.test tests
