@@ -13,23 +13,23 @@ from .utils import (
     get_worksheet_name)
 
 
-# @click.command()
-# @click.option(
-#     '--environment',
-#     default='development',
-#     prompt='Spreadsheet to use',
-#     type=click.Choice(['development', 'test', 'production']))
-# @click.option(
-#     '--year',
-#     default=current_year(),
-#     prompt='Year to use')
-# @click.option(
-#     '--month',
-#     default=current_month_number(),
-#     prompt='Number of month to use (1=Jan, 2=Feb, etc)',
-#     type=click.IntRange(1, 12))
-# @click.option('--start', default=2500.00, prompt='Start Balance')
-# @click.option('--end', default=500.00, prompt='End Balance')
+@click.command()
+@click.option(
+    '--environment',
+    default='production',
+    prompt='Spreadsheet to use',
+    type=click.Choice(['development', 'test', 'production']))
+@click.option(
+    '--year',
+    default=current_year(),
+    prompt='Year to use')
+@click.option(
+    '--month',
+    default=current_month_number(),
+    prompt='Number of month to use (1=Jan, 2=Feb, etc)',
+    type=click.IntRange(1, 12))
+@click.option('--start', default=2500.00, prompt='Start Balance')
+@click.option('--end', default=500.00, prompt='End Balance')
 def create_sheet_for_month(year, month, start, end, environment):
     """
     Prompt user for required values then create Google spreadsheet with amounts
@@ -37,7 +37,7 @@ def create_sheet_for_month(year, month, start, end, environment):
     """
     # TODO: validate year values here, could be any integer
     if environment == 'production':
-        name = 'Money'
+        name = 'Money 2016'
     elif environment == 'test':
         name = 'Money test'
     else:
