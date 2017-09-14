@@ -10,14 +10,15 @@ def clean_amount(amount):
 
 
 def current_month_number():
-    """
-    Returns list of strings as click requires this
-    """
     return datetime.now().month
 
 
 def current_year():
     return datetime.now().year
+
+
+def current_day():
+    return datetime.now().day
 
 
 def get_worksheet_name(year, month):

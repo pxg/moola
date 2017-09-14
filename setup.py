@@ -25,5 +25,8 @@ setup(
     include_package_data=True,
     zip_safe=False,
     entry_points={
-        'console_scripts': ['moola = moola.shell:create_sheet_for_month']
+        'console_scripts': [
+            'moola = moola.shell:create_sheet_for_month',
+            'monzo_moola = moola.shell:get_monzo_balance'
+        ]
     })

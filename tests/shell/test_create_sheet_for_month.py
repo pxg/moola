@@ -1,6 +1,7 @@
 import pytest
 
-from moola.shell import create_sheet_for_month, delete_worksheet
+from moola.shell import create_sheet_for_month
+from moola.shell.gsheets import delete_worksheet
 
 slow = pytest.mark.skipif(
     not pytest.config.getoption("--runslow"),

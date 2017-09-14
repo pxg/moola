@@ -1,5 +1,4 @@
-from datetime import datetime
-from mock import patch
+from freezegun import freeze_time
 
 from moola.utils import (
     clean_amount,
@@ -16,16 +15,14 @@ def test_clean_amount_only_formatted_input():
     assert clean_amount('-£1,499.99') == '-1499.99'
 
 
+@freeze_time('2015-02-02 15:36')
 def test_current_month_number():
-    with patch('moola.utils.datetime') as mock_datetime:
-        mock_datetime.now.return_value = datetime(2016, 2, 2, 15, 36)
-        assert current_month_number() == 2
+    assert current_month_number() == 2
 
 
+@freeze_time('2015-02-02 15:36')
 def test_current_year():
-    with patch('moola.utils.datetime') as mock_datetime:
-        mock_datetime.now.return_value = datetime(2015, 2, 2, 15, 36)
-        assert current_year() == 2015
+    assert current_year() == 2015
 
 
 def test_get_spreadsheet_name_feb():

@@ -2,7 +2,7 @@ from collections import namedtuple
 from datetime import date
 from mock import Mock
 
-from moola.shell import _next_cell_set_value, _set_cells
+from moola.shell.gsheets import _next_cell_set_value, _set_cells
 from moola.models import Money
 
 
