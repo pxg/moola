@@ -1,4 +1,3 @@
-# TODO: rename shell/monzo.py
 import requests
 
 

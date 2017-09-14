@@ -1,7 +1,7 @@
 import os
 import responses
 
-from moola.shell_monzo import _get_balance_api_url, _get_current_balance
+from moola.shell.monzo import _get_balance_api_url, _get_current_balance
 
 
 @responses.activate

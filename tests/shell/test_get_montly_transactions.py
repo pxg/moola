@@ -1,9 +1,9 @@
-from moola.shell import _get_monthly_transactions
+from moola.shell.gsheets import _get_monthly_transactions
 from moola.models import Transaction, Money
 
 
 def test_get_monthly_transactions_returns_list(spreadsheet):
-    assert isinstance(_get_monthly_transactions(spreadsheet), list) == True
+    assert isinstance(_get_monthly_transactions(spreadsheet), list) is True
 
 
 def test_get_monthly_transactions_returns_two_items(spreadsheet):
@@ -13,7 +13,7 @@ def test_get_monthly_transactions_returns_two_items(spreadsheet):
 def test_get_monthly_transactions_returns_list_of_transactions(spreadsheet):
     transaction = _get_monthly_transactions(spreadsheet)[0]
 
-    assert isinstance(transaction, Transaction) == True
+    assert isinstance(transaction, Transaction) is True
 
 
 def test_get_monthly_transactions_transaction_day(spreadsheet):
