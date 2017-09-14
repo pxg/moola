@@ -1,10 +1,10 @@
-#Moola
+# Moola
 
 Track finances in a Google spreadsheet. Project was created as dealing with logic in a spreadsheet was becoming fiddly.
 
 Has been developed using Python 3.4.3.
 
-#Installation
+# Installation
 ```
 pip install requirements.txt
 pip install -e .
@@ -17,7 +17,7 @@ To run (some of these steps will be automated as future tasks):
 
 To run the application type `moola` on the terminal then follow the prompts.
 
-##Testing
+## Testing
 
 To run the tests:
 ```

@@ -16,12 +16,14 @@ def test_clean_amount_only_formatted_input():
     assert clean_amount('-£1,499.99') == '-1499.99'
 
 
+# TODO: use freezegun
 def test_current_month_number():
     with patch('moola.utils.datetime') as mock_datetime:
         mock_datetime.now.return_value = datetime(2016, 2, 2, 15, 36)
         assert current_month_number() == 2
 
 
+# TODO: use freezegun
 def test_current_year():
     with patch('moola.utils.datetime') as mock_datetime:
         mock_datetime.now.return_value = datetime(2015, 2, 2, 15, 36)

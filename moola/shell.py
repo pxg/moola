@@ -1,13 +1,16 @@
 import json
+import os
 
 import click
 import gspread
 from gspread.exceptions import WorksheetNotFound
 from oauth2client.client import SignedJwtAssertionCredentials
 
+from .shell_monzo import _get_current_balance
 from .core import daily_balances_for_month
 from .models import Transaction
 from .utils import (
+    current_day,
     current_month_number,
     current_year,
     get_worksheet_name)
@@ -75,6 +78,23 @@ def delete_worksheet(year, month):
         pass
 
 
+def get_monzo_balance():
+    """
+    Get balance from Monzo and write to Google Sheet
+    """
+    balance = _get_current_balance(
+        account_id=os.environ.get('MONZO_ACCOUNT_ID'),
+        access_token=os.environ.get('MONZO_ACCESS_TOKEN'))
+    print('balance in pence {}'.format(balance))
+
+    # TODO: toogles on this for dev, etc
+    spreadsheet = _get_google_spreadsheet('Money 2017')
+    _write_monzo_balances_to_spreadsheet(spreadsheet, balance)
+    _print_spreadsheet_url(spreadsheet)
+    # TODO: write to google_sheet
+
+
+# TOOD: move functions to shell/gsheets.py
 def _print_spreadsheet_url(spreadsheet):
     url = 'https://docs.google.com/spreadsheets/d/{0}/edit'.format(
         spreadsheet.id)
@@ -120,6 +140,17 @@ def _write_balances_to_spreadsheet(spreadsheet, balances, year, month):
     cells = worksheet.range('A1:B{0}'.format(len(balances) + 1))
     worksheet.update_cells(_set_cells(cells, balances))
     return worksheet
+
+
+def _write_monzo_balances_to_spreadsheet(spreadsheet, balance):
+    """
+    Write today's Monzo balance to the correct sheet and cell in Google Sheets
+    """
+    name = get_worksheet_name(current_year(), current_month_number())
+    print('Worksheet name {}'.format(name))
+    # TODO: error catching in case worksheet doesn't exist
+    worksheet = spreadsheet.worksheet(name)
+    worksheet.update_acell('C{}'.format(current_day() + 1), balance / 100)
 
 
 def _set_cells(cells, balances):
