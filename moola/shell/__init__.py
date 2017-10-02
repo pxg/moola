@@ -39,7 +39,7 @@ def create_sheet_for_month(year, month, start, end, environment):
     """
     # TODO: validate year values here, could be any integer
     if environment == 'production':
-        name = 'Money 2016'
+        name = 'Money 2017'
     elif environment == 'test':
         name = 'Money test'
     else:
