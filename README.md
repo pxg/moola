@@ -1,12 +1,17 @@
 # Moola
 
-Track finances in a Google spreadsheet. Project was created as dealing with logic in a spreadsheet was becoming fiddly.
-
-Has been developed using Python 3.4.3.
+Track finances in a Google spreadsheet. Project was created as dealing with logic in a spreadsheet was becoming fiddly. Developed using Python 3.6.2.
 
 # Installation
+
+I recommend first creating a python3 virtual environment:
 ```
-pip install requirements.txt
+mkvirtualenv --python=`which python3` moola
+```
+
+Then install requirements and the package:
+```
+pip install -r requirements.txt
 pip install -e .
 ```
 To run (some of these steps will be automated as future tasks):
@@ -23,3 +28,7 @@ To run the tests:
 ```
 py.test
 ```
+
+## To run
+
+From the root of the repo run `moola` and follow the instructions.
