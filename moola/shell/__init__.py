@@ -39,7 +39,7 @@ def create_sheet_for_month(year, month, start, end, environment):
     """
     # TODO: validate year values here, could be any integer
     if environment == 'production':
-        name = 'Money 2017'
+        name = 'Money 2018'
     elif environment == 'test':
         name = 'Money test'
     else:
@@ -71,6 +71,6 @@ def get_monzo_balance():
     balance = _get_current_balance(
         account_id=os.environ.get('MONZO_ACCOUNT_ID'),
         access_token=os.environ.get('MONZO_ACCESS_TOKEN'))
-    spreadsheet = _get_google_spreadsheet('Money 2017')
+    spreadsheet = _get_google_spreadsheet('Money 2018')
     _write_monzo_balances_to_spreadsheet(spreadsheet, balance)
     _print_spreadsheet_url(spreadsheet)
