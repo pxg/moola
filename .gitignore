@@ -1,8 +1,10 @@
 # File I don't want publically available
-TODO.txt
+TODO.md
 credentials.json
 
 # Python cache files
 .cache
 *.egg-info
 __pycache__
+.pytest_cache
+.envrc
