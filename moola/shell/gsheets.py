@@ -80,7 +80,7 @@ def _write_monzo_balances_to_spreadsheet(spreadsheet, balance):
     print('Worksheet name {}'.format(name))
     # TODO: error catching in case worksheet doesn't exist
     worksheet = spreadsheet.worksheet(name)
-    worksheet.update_acell('C{}'.format(current_day() + 1), balance / 100)
+    worksheet.update_acell('B{}'.format(current_day() + 1), balance / 100)
 
 
 def _set_cells(cells, balances):
