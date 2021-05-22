@@ -6,7 +6,10 @@ responses==0.7.0
 
 # Application
 click==6.3
+Flask==2.0.1
 gspread==0.3.0
 money==1.2.2
 oauth2client==1.5.2  # Newer version has problems
 pyOpenSSL==20.0.1 # For Google API authorization
+zappa==0.52.0
+.
