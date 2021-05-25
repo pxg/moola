@@ -22,7 +22,7 @@ def test_calc_monthly_spend_decimal_balances():
 def test_calc_monthly_spend_with_transaction():
     start_balance = Money(2500)
     end_balance = Money(500)
-    transactions = [Transaction(2, -50, 'Broadband')]
+    transactions = [Transaction(2, -50, "Broadband")]
 
     monthly_spend = _monthly_spend(start_balance, end_balance, transactions)
 
@@ -32,9 +32,7 @@ def test_calc_monthly_spend_with_transaction():
 def test_calc_monthly_spend_with_decimal_transactions():
     start_balance = Money(2500)
     end_balance = Money(500)
-    transactions = [
-        Transaction(2, -9.99, 'Nexflix'),
-        Transaction(2, -5.00, 'Spotify')]
+    transactions = [Transaction(2, -9.99, "Nexflix"), Transaction(2, -5.00, "Spotify")]
 
     monthly_spend = _monthly_spend(start_balance, end_balance, transactions)
 
