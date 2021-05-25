@@ -7,7 +7,7 @@ def test_transactions_total_no_transactions():
 
 
 def test_transactions_total_one_transaction():
-    transactions = [Transaction(2, -9.99, 'Nexflix')]
+    transactions = [Transaction(2, -9.99, "Nexflix")]
 
     total = _transactions_total(transactions)
 
@@ -15,9 +15,7 @@ def test_transactions_total_one_transaction():
 
 
 def test_transactions_total_two_transactions():
-    transactions = [
-        Transaction(2, -9.99, 'Nexflix'),
-        Transaction(2, -5.00, 'Spotify')]
+    transactions = [Transaction(2, -9.99, "Nexflix"), Transaction(2, -5.00, "Spotify")]
 
     total = _transactions_total(transactions)
 

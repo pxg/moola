@@ -29,11 +29,10 @@ def test_get_monthly_transactions_transaction_amount(spreadsheet):
 def test_get_monthly_transactions_transaction_description(spreadsheet):
     transaction = _get_monthly_transactions(spreadsheet)[0]
 
-    assert transaction.description == 'Netflix'
+    assert transaction.description == "Netflix"
 
 
-def test_get_monthly_transactions_transaction_dirty_amount(
-        spreadsheet_dirty_data):
+def test_get_monthly_transactions_transaction_dirty_amount(spreadsheet_dirty_data):
     transaction = _get_monthly_transactions(spreadsheet_dirty_data)[0]
 
     assert transaction.amount.rounded_amount == Money(-1499.99).rounded_amount

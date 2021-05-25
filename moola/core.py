@@ -13,21 +13,15 @@ def daily_balances_for_month(year, month, start, end, transactions=[]):
     end_balance = Money(end)
     dates = _dates_in_month(year, month)
     daily_spend = _daily_spend(
-        start_balance,
-        end_balance,
-        transactions,
-        num_days=len(dates))
-    print('Daily spend £{}'.format(daily_spend))
+        start_balance, end_balance, transactions, num_days=len(dates)
+    )
+    print("Daily spend £{}".format(daily_spend))
 
     month_balances = []
 
-    Balance = namedtuple('Balance', 'date amount')
+    Balance = namedtuple("Balance", "date amount")
     for date in dates:
-        balance = _balance_for_date(
-            date,
-            daily_spend,
-            start_balance,
-            transactions)
+        balance = _balance_for_date(date, daily_spend, start_balance, transactions)
         month_balances.append(Balance(date, balance.rounded_amount))
     return month_balances
 
