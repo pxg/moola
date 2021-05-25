@@ -4,12 +4,6 @@ from collections import namedtuple
 from .models import Money
 
 
-def test_log():
-    name = "Pete"
-    print(f"Hello {name}")
-    return name
-
-
 def daily_balances_for_month(year, month, start, end, transactions=[]):
     """
     Get the predicted daily balance for each day of the month based on start

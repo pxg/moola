@@ -5,6 +5,12 @@
         "profile_name": "default",
         "project_name": "moola",
         "runtime": "python3.6",
-        "s3_bucket": "zappa-0597pfv9o"
+        "s3_bucket": "zappa-0597pfv9o",
+        "events":[
+         {
+            "function":"moola.shell.get_monzo_balance",
+            "expression":"cron(00 00 * * ? *)"
+         },
+      ]
     }
 }
