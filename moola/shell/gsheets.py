@@ -38,13 +38,12 @@ def _get_monthly_transactions(spreadsheet):
 
 
 def _get_google_spreadsheet(name):
+    """
+    Connect to the spreadsheet using the API official library docs
+    https://docs.gspread.org/en/latest/oauth2.html
+    """
     print("Connecting to Google Docs")
-    json_key = json.load(open("./moola/credentials.json"))
-    scope = ["https://spreadsheets.google.com/feeds"]
-    credentials = SignedJwtAssertionCredentials(
-        json_key["client_email"], json_key["private_key"].encode(), scope
-    )
-    gc = gspread.authorize(credentials)
+    gc = gspread.service_account()
     return gc.open(name)
 
 
@@ -96,5 +95,5 @@ def _next_cell_set_value(value, cells):
     Get the next cells to populate set it's value and return
     """
     cell = cells.pop(0)
-    cell.value = value
+    cell.value = str(value)
     return cell
