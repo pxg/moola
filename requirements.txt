@@ -6,7 +6,7 @@ responses==0.7.0
 
 # Application
 click==6.3
-Flask==2.0.1
+Flask==2.3.2
 gspread==4.0.1
 money==1.2.2
 oauth2client==1.5.2  # Newer version has problems
